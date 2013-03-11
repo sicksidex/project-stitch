@@ -24,17 +24,14 @@
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                 mapOptions);
 
-            setInterval(function () {
-                var center = map.getCenter();
-                var data = {};
+            socket.onmessage = function (msg) {
+                var message = msg.data;
+                var data = JSON.parse(message);
+                var latlng = new google.maps.LatLng(data.lat, data.long + 5.2);
+                map.panTo(latlng);
+                map.setZoom(data.zoom);
 
-                data.lat = center.lat();
-                data.long = center.lng();
-                data.zoom = map.getZoom();
-
-                var message = JSON.stringify(data);
-                socket.send(message);
-            }, 50);
+            };
         }
     </script>
   </head>
