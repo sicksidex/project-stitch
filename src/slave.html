@@ -13,25 +13,76 @@
     </script>
     <script type="text/javascript">
         function initialize() {
-            var socket = new WebSocket("ws://localhost:8182");
-
+            var socket = new WebSocket("ws://192.168.0.16:8182");
+            var widthInch;
+            var deviceID = 0;
+            var offsetInch;
+            var zoomMaster = 5;
 
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.644244),
-                zoom: 8,
+                zoom: zoomMaster,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                 mapOptions);
 
-            socket.onmessage = function (msg) {
-                var message = msg.data;
-                var data = JSON.parse(message);
-                var latlng = new google.maps.LatLng(data.lat, data.long + 5.2);
-                map.panTo(latlng);
-                map.setZoom(data.zoom);
+            socket.onopen = function () { newDevice(); };
+            socket.onmessage = function (msg) { recieve(msg.data); };
+            
 
-            };
+            function newDevice() {
+                getDimensions();
+                send("mas," + widthInch.toFixed(4));
+            }
+
+            function getDimensions() {
+                var p = window.devicePixelRatio;
+                var widthPixel = window.screen.width * p;
+                alert(widthPixel);
+                var heightPixel = window.screen.height * p;
+                var DPI = p * 155;
+                widthInch = widthPixel / DPI;
+            }
+
+            function send(msg) {
+                socket.send(msg);
+            }
+
+            function recieve(msg) {
+                var data = msg.split(",");
+                switch (data[0]) {
+                    case "ini":
+                        if (deviceID == 0) {
+                            deviceID = data[1];
+                            offsetInch = data[2];
+                        }
+                        break;
+                    case "pos":
+                        var zoom = parseInt(data[1]);
+                        var lat = data[2];
+                        var lng = data[3];
+
+                        if (zoom != zoomMaster) {
+                            map.setZoom(zoom);
+                            zoomMaster = zoom;
+                        }
+                        recenterMap(lat, lng);
+                        break;
+                    default:
+                        break;
+                        
+                }
+
+            }
+
+            function recenterMap(lat, lng) {
+                var offset = offsetInch * (217.6 / Math.pow(2, zoomMaster));
+                var newLng = lng - offset;
+                var newCenter = new google.maps.LatLng(lat, newLng);
+                map.setCenter(newCenter);
+            }
+            
         }
     </script>
   </head>

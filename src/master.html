@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>Experiment</title>
+      <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?sensor=true">
+    </script>
+    <script type="text/javascript">
+        
+
+        function initialize() {
+            var socket = new WebSocket("ws://192.168.0.16:8182");
+            var zoomMaster = 5;
+            var mDPI;
+            var mWidthInch;
+            var totalWidth = 0;
+            var devicesCount = 0;
+            
+            var mapOptions = {
+                center: new google.maps.LatLng(-34.397433, 150.644244),
+                zoom: zoomMaster,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"),
+                mapOptions);
+
+            getDimensions();
+            socket.onopen = function () {};
+            socket.onmessage = function (msg) { recieve(msg.data);};
+
+            google.maps.event.addListener(map, 'center_changed', function () { recenterMaps(); });
+
+            google.maps.event.addListener(map, 'zoom_changed', function () {
+                zoomMaster = map.getZoom();
+                recenterMaps();
+            });
+            
+            function getDimensions() {
+                var p = window.devicePixelRatio;
+                var mWidthPixel = window.screen.width * p;
+                var mHeightPixel = window.screen.height * p;
+                mDPI = p * 155;
+                mWidthInch = mWidthPixel / mDPI;
+                addWidth(mWidthInch.toFixed(4));
+            }
+
+            function addWidth(width) {
+                var bezel = (width * 7.5) / 100;
+                totalWidth = totalWidth + (width/2) + bezel;
+            }
+
+            function recieve(msg) {
+                var data = msg.split(",");
+
+                if (data[0] == "mas") {
+                    devicesCount++;
+                    addWidth(data[1]);
+                    send("ini," + devicesCount + "," + totalWidth);
+                    addWidth(data[1]);
+                    recenterMaps();
+                }
+
+            }
+
+            function recenterMaps() {
+                var center = map.getCenter();
+                var centerLat = center.lat();
+                var centerLng = center.lng();
+                send("pos," + zoomMaster + "," + centerLat.toFixed(8) + "," + centerLng.toFixed(8));
+            }
+
+            function send(msg) {
+                socket.send(msg);
+            }
+        }
+
+        
+
+        
+
+
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
