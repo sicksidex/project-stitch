@@ -25,7 +25,8 @@
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.644244),
                 zoom: zoomMaster,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                mapTypeControl: true
             };
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                 mapOptions);
@@ -39,6 +40,11 @@
             google.maps.event.addListener(map, 'zoom_changed', function () {
                 zoomMaster = map.getZoom();
                 recenterMaps();
+            });
+
+            google.maps.event.addListener(map, 'maptypeid_changed', function () {
+                var mapType = map.getMapTypeId();
+                send("lay," + mapType);
             });
             
             function getDimensions() {

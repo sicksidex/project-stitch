@@ -22,7 +22,8 @@
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.644244),
                 zoom: zoomMaster,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                disableDefaultUI: true
             };
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                 mapOptions);
@@ -68,6 +69,9 @@
                         }
                         recenterMap(lat, lng);
                         break;
+                    case "lay":
+                        var mapType = data[1];
+                        map.setMapTypeId(mapType);
                     default:
                         break;
                         
