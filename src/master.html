@@ -19,7 +19,8 @@
             var zoomMaster = 5;
             var mDPI;
             var mWidthInch;
-            var totalWidth = 0;
+            var totalWidthL = 0;
+            var totalWidthR = 0;
             var devicesCount = 0;
             
             var mapOptions = {
@@ -53,12 +54,17 @@
                 var mHeightPixel = window.screen.height * p;
                 mDPI = p * 155;
                 mWidthInch = mWidthPixel / mDPI;
-                addWidth(mWidthInch.toFixed(4));
+                addWidth(mWidthInch.toFixed(4), "L");
+                addWidth(mWidthInch.toFixed(4), "R");
             }
 
-            function addWidth(width) {
+            function addWidth(width, dir) {
                 var bezel = (width * 7.5) / 100;
-                totalWidth = totalWidth + (width/2) + bezel;
+                if (dir == "L") {
+                    totalWidthL = totalWidthL + (width / 2) + bezel;
+                } else {
+                    totalWidthR = totalWidthR + (width / 2) + bezel;
+                }
             }
 
             function recieve(msg) {
@@ -66,9 +72,9 @@
 
                 if (data[0] == "mas") {
                     devicesCount++;
-                    addWidth(data[1]);
+                    addWidth(data[1], data[2]);
                     send("ini," + devicesCount + "," + totalWidth);
-                    addWidth(data[1]);
+                    addWidth(data[1], data[2]);
                     recenterMaps();
                 }
 
