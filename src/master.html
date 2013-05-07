@@ -1,18 +1,27 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Experiment</title>
-      <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map_canvas { height: 100% }
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map_canvas {
+            height: 100%;
+        }
     </style>
     <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?sensor=true">
+        src="https://maps.googleapis.com/maps/api/js?sensor=true">
     </script>
     <script type="text/javascript">
-        
 
         function initialize() {
             var socket = new WebSocket("ws://192.168.0.16:8182");
@@ -22,7 +31,7 @@
             var totalWidthL = 0;
             var totalWidthR = 0;
             var devicesCount = 0;
-            
+
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.111),
                 zoom: zoomMaster,
@@ -33,8 +42,8 @@
                 mapOptions);
 
             getDimensions();
-            socket.onopen = function () {};
-            socket.onmessage = function (msg) { recieve(msg.data);};
+            socket.onopen = function () { };
+            socket.onmessage = function (msg) { recieve(msg.data); };
 
             google.maps.event.addListener(map, 'center_changed', function () { recenterMaps(); });
 
@@ -47,7 +56,7 @@
                 var mapType = map.getMapTypeId();
                 send("lay," + mapType);
             });
-            
+
             function getDimensions() {
                 var p = window.devicePixelRatio;
                 var mWidthPixel = window.screen.width * p;
@@ -70,17 +79,29 @@
             function recieve(msg) {
                 var data = msg.split(",");
 
-                if (data[0] == "mas") {
-                    devicesCount++;
-                    addWidth(data[1], data[2]);
-                    if (data[2] == "L") {
-                        send("ini," + devicesCount + "," + totalWidthL);
-                    } else {
-                        send("ini," + devicesCount + "," + totalWidthR);
-                    }
-                    
-                    addWidth(data[1], data[2]);
-                    recenterMaps();
+                switch (data[0]) {
+                    case "mas":
+                        devicesCount++;
+                        addWidth(data[1], data[2]);
+                        if (data[2] == "L") {
+                            send("ini," + devicesCount + "," + totalWidthL);
+                        } else {
+                            send("ini," + devicesCount + "," + totalWidthR);
+                        }
+                        addWidth(data[1], data[2]);
+                        recenterMaps();
+                        break;
+                    case "slv":
+                        var zoom = parseInt(data[1]);
+                        if (zoom != zoomMaster) {
+                            zoomMaster = zoom;
+                            map.setZoom(zoom);
+                        }
+                        var lat = data[2];
+                        var lng = data[3];
+                        var newCenter = new google.maps.LatLng(lat, lng);
+                        map.setCenter(newCenter);
+                        break;
                 }
 
             }
@@ -96,15 +117,9 @@
                 socket.send(msg);
             }
         }
-
-        
-
-        
-
-
     </script>
-  </head>
-  <body onload="initialize()">
-    <div id="map_canvas" style="width:100%; height:100%"></div>
-  </body>
+</head>
+<body onload="initialize()">
+    <div id="map_canvas" style="width: 100%; height: 100%"></div>
+</body>
 </html>

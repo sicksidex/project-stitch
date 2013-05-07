@@ -19,19 +19,28 @@
             var offsetInch;
             var dir;
             var zoomMaster = 5;
+            var fromMas = 0;
 
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.111),
                 zoom: zoomMaster,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
-                disableDefaultUI: true
+                disableDefaultUI: true,
+                zoomControl: true
             };
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                 mapOptions);
 
             socket.onopen = function () { newDevice(); };
             socket.onmessage = function (msg) { recieve(msg.data); };
-            
+
+            google.maps.event.addListener(map, 'center_changed', function () {
+                recenterMaster();
+            });
+
+            google.maps.event.addListener(map, 'zoom_changed', function () {
+                recenterMaster();
+            });
 
             function newDevice() {
                 getDimensions();
@@ -59,6 +68,7 @@
             }
 
             function recieve(msg) {
+                fromMas = 1;
                 var data = msg.split(",");
                 switch (data[0]) {
                     case "ini":
@@ -73,8 +83,8 @@
                         var lng = data[3];
 
                         if (zoom != zoomMaster) {
-                            map.setZoom(zoom);
                             zoomMaster = zoom;
+                            map.setZoom(zoom);
                         }
                         recenterMap(lat, lng);
                         break;
@@ -85,7 +95,7 @@
                         break;
                         
                 }
-
+                fromMas = 0;
             }
 
             function recenterMap(lat, lng) {
@@ -101,6 +111,31 @@
                 
                 var newCenter = new google.maps.LatLng(lat, newLng);
                 map.setCenter(newCenter);
+            }
+
+            function recenterMaster() {
+                if (fromMas == 0) {
+                    setTimeout(function () {
+                        var zoom = map.getZoom();
+                        var center = map.getCenter();
+                        var lat = center.lat();
+                        var lng = center.lng();
+                        var offset = offsetInch * (217.6 / Math.pow(2, zoomMaster));
+                        var newLng;
+                        if (dir == "R") {
+                            newLng = lng - offset;
+                            console.log(newLng);
+
+                        } else {
+                            newLng = lng - (-offset);
+                            console.log(newLng);
+                        }
+
+                        send("slv," + zoom + "," + lat.toFixed(8) + "," + newLng.toFixed(8));
+                        console.log("fired");
+                    }, 100);
+                    
+                }
             }
             
         }
