@@ -17,10 +17,11 @@
             var widthInch;
             var deviceID = 0;
             var offsetInch;
+            var dir;
             var zoomMaster = 5;
 
             var mapOptions = {
-                center: new google.maps.LatLng(-34.397433, 150.644244),
+                center: new google.maps.LatLng(-34.397433, 150.111),
                 zoom: zoomMaster,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 disableDefaultUI: true
@@ -34,7 +35,15 @@
 
             function newDevice() {
                 getDimensions();
-                send("mas," + widthInch.toFixed(4));
+                var dirCheck = confirm("Is this device on the left?");
+                if (dirCheck == true) {
+                    dir = "L";
+                    send("mas," + widthInch.toFixed(4) + ",L");
+                } else {
+                    send("mas," + widthInch.toFixed(4) + ",R");
+                    dir = "R";
+                }
+                
             }
 
             function getDimensions() {
@@ -81,7 +90,15 @@
 
             function recenterMap(lat, lng) {
                 var offset = offsetInch * (217.6 / Math.pow(2, zoomMaster));
-                var newLng = lng - offset;
+                var newLng;
+                if (dir == "L") {
+                    newLng = lng - offset;
+                    console.log(newLng);
+                } else {
+                    newLng = lng - (-offset);
+                    console.log(newLng);
+                }
+                
                 var newCenter = new google.maps.LatLng(lat, newLng);
                 map.setCenter(newCenter);
             }

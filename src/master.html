@@ -24,7 +24,7 @@
             var devicesCount = 0;
             
             var mapOptions = {
-                center: new google.maps.LatLng(-34.397433, 150.644244),
+                center: new google.maps.LatLng(-34.397433, 150.111),
                 zoom: zoomMaster,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 mapTypeControl: true
@@ -73,7 +73,12 @@
                 if (data[0] == "mas") {
                     devicesCount++;
                     addWidth(data[1], data[2]);
-                    send("ini," + devicesCount + "," + totalWidth);
+                    if (data[2] == "L") {
+                        send("ini," + devicesCount + "," + totalWidthL);
+                    } else {
+                        send("ini," + devicesCount + "," + totalWidthR);
+                    }
+                    
                     addWidth(data[1], data[2]);
                     recenterMaps();
                 }
