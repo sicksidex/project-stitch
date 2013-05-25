@@ -120,7 +120,7 @@
                         var center = map.getCenter();
                         var lat = center.lat();
                         var lng = center.lng();
-                        var offset = offsetInch * (217.6 / Math.pow(2, zoomMaster));
+                        var offset = offsetInch * (217.6 / Math.pow(2, zoom));
                         var newLng;
                         if (dir == "R") {
                             newLng = lng - offset;

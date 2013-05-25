@@ -39,7 +39,7 @@
                 height: window.innerHeight
             });
             var boxLayer = new Kinetic.Layer();
-            var box = [];
+            var boxArray = [];
 
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.111),
@@ -77,12 +77,20 @@
             }
 
             function addDevice(width, height, ID) {
-                var bezel = (width * 7.5) / 100;
-                if (dir == "L") {
-                    totalWidthL = totalWidthL + (width / 2) + bezel;
-                } else {
-                    totalWidthR = totalWidthR + (width / 2) + bezel;
-                }
+                var wBezel = (width * 7.5) / 100;
+                var hBezel = (height * 12.5) / 100;
+                var totalWidth = width + wBezel;
+                var totalHeight = height + hBezel;
+                var box = new Kinetic.Rect({
+                    x: 0,
+                    y: 0,
+                    width: totalWidth,
+                    height: totalHeight,
+                    stroke: '#00D2FF',
+                    strokeWidth: 4,
+                    draggable: true
+                });
+                boxArray.push(box);
             }
 
             function recieve(msg) {
