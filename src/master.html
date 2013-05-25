@@ -2,21 +2,37 @@
 <html>
 <head>
     <title>Experiment</title>
+        <meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport">
+
+    <link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <script type="text/javascript">
+            //<![CDATA[ 
+            $(window).load(function () {
+                changeContent = function (key) {
+                    html = textHash[key];
+                    $('#content').html(html);
+                }
+
+                $("#menubutton a").click(function (e) {
+                    $('#menu').collapse('hide');
+                    changeContent(e.target.innerText);
+                });
+
+                textHash = {
+                    "Device 1": "<h1>You Have Selected Device 1</h1>",
+                    "Device 2": "<h1>You Have Selected Device 2</h1>",
+                    "Device 3": "<h1>You Have Selected Device 3</h1>"
+                };
+            });//]]>  
+    </script>
     <style type="text/css">
-        html {
-            height: 100%;
-        }
 
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #map_canvas {
-            height: 100%;
-        }
     </style>
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?sensor=true">
@@ -24,7 +40,7 @@
     <script type="text/javascript">
 
         function initialize() {
-            var socket = new WebSocket("ws://192.168.0.16:8182");
+            var socket = new WebSocket("ws://10.1.1.8:8182");
             var zoomMaster = 5;
             var mDPI;
             var mWidthInch;
@@ -120,6 +136,60 @@
     </script>
 </head>
 <body onload="initialize()">
-    <div id="map_canvas" style="width: 100%; height: 100%"></div>
+    <div id="map_canvas"></div>
+      <button id="btn1">Menu</button>
+    <div id="container">
+<div id="hidediv">
+        <div class="viewport">
+      <div class="frame">
+        <div id="menu" class="menu nav-collapse collapse width">
+          <div class="collapse-inner">
+            <div class="navbar navbar-inverse">
+              <div class="navbar-inner">
+                Menu
+              </div>
+            </div>
+            <ul class="nav nav-tabs nav-stacked">
+              <li><a>Device 1</a></li>
+              <li><a>Device 2</a></li>
+              <li><a>Device 3</a></li>
+            </ul>
+                <button id="btn2">Close Menu</button>
+          </div>
+        </div>
+        <div class="view">
+          <div class="navbar navbar-inverse">
+            <div class="navbar-inner">
+              <button id="menubutton" type="button" class="btn btn-navbar" data-toggle="collapse" data-target="#menu">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+                      <script>
+                          $('#container').hide();
+                          $("#btn1").click(function () {
+                              $("#container").toggle("slow");
+                              $('#btn1').hide();
+
+                          });
+                          $("#btn2").click(function () {
+                              $("#container").toggle("slow");
+                              $('#btn1').show();
+                              $('#menu').hide();
+                          });
+                          $("#menubutton").click(function () {
+                              $("#menu").show();
+                          });
+
+
+
+</script>
+        </div>
 </body>
 </html>
