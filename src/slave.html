@@ -17,7 +17,8 @@
             var widthInch;
             var heightInch;
             var deviceID = 0;
-            var offsetInch;
+            var offsetInchX;
+            var offsetInchY;
             var dir;
             var zoomMaster = 5;
             var fromMas = 0;
@@ -45,7 +46,9 @@
 
             function newDevice() {
                 getDimensions();
-                send("mas," + widthInch.toFixed(4) + "," + heightInch.toFixed(4));
+                var w = widthInch.toFixed(4) * 10000;
+                var h = heightInch.toFixed(4) * 10000;
+                send("mas," + w + "," + h);
             }
 
             function getDimensions() {
@@ -68,7 +71,8 @@
                     case "ini":
                         if (deviceID == 0) {
                             deviceID = data[1];
-                            offsetInch = data[2];
+                            offsetInchX = data[2];
+                            offsetInchY = data[3];
                         }
                         break;
                     case "pos":
@@ -93,16 +97,15 @@
             }
 
             function recenterMap(lat, lng) {
-                var offset = offsetInch * (217.6 / Math.pow(2, zoomMaster));
+                var offsetX = offsetInchX * (217.6 / Math.pow(2, zoomMaster));
+                var offsetY = offsetInchY * (217.6 / Math.pow(2, zoomMaster));
+                var newLat;
                 var newLng;
-                if (dir == "L") {
-                    newLng = lng - offset;
-                    console.log(newLng);
-                } else {
-                    newLng = lng - (-offset);
-                    console.log(newLng);
-                }
-                
+
+                newLat = lat - offsetY;
+                newLng = lng - offsetX;
+                console.log(offsetX);
+                console.log(offsetY);
                 var newCenter = new google.maps.LatLng(lat, newLng);
                 map.setCenter(newCenter);
             }
@@ -114,18 +117,17 @@
                         var center = map.getCenter();
                         var lat = center.lat();
                         var lng = center.lng();
-                        var offset = offsetInch * (217.6 / Math.pow(2, zoom));
+                        var offsetX = offsetInchX * (217.6 / Math.pow(2, zoom));
+                        var offsetY = offsetInchY * (217.6 / Math.pow(2, zoom));
+                        var newLat;
                         var newLng;
-                        if (dir == "R") {
-                            newLng = lng - offset;
-                            console.log(newLng);
-
-                        } else {
-                            newLng = lng - (-offset);
-                            console.log(newLng);
-                        }
-
-                        send("slv," + zoom + "," + lat.toFixed(8) + "," + newLng.toFixed(8));
+                        
+                        newLat = offsetY + lat;
+                        newLng = offsetX + lng;
+                         
+                        console.log(offsetX);
+                        console.log(offsetY);
+                        send("slv," + zoom + "," + newLat.toFixed(8) + "," + newLng.toFixed(8));
                         console.log("fired");
                     }, 100);
                     

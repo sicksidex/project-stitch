@@ -85,8 +85,6 @@
                 var hBezel = (height * 12.5) / 100;
                 var totalWidth = width + wBezel;
                 var totalHeight = height + hBezel;
-                console.log(wBezel);
-                console.log(totalHeight);
                 var box = new Kinetic.Rect({
                     x: stage.getWidth() / 2,
                     y: stage.getHeight() / 2,
@@ -102,14 +100,22 @@
                 boxLayer.add(boxArray[devicesCount]);
                 stage.add(boxLayer);
             }
-
+            
             function recieve(msg) {
                 var data = msg.split(",");
 
                 switch (data[0]) {
                     case "mas":
-                        addDevice(data[1], data[2]);
-                        send("ini," + devicesCount);
+                        var w = parseInt(data[1]);
+                        var h = parseInt(data[2]);
+                        addDevice(w, h);
+                        console.log(boxArray[0].getX());
+                        console.log(boxArray[0].getAbsolutePosition().x);
+                        var x = ((boxArray[0].getX()) + (boxArray[0].getWidth() / 2)) - ((boxArray[devicesCount].getX()) + (boxArray[devicesCount].getWidth() / 2));
+                        var y = ((boxArray[0].getY()) + (boxArray[0].getHeight() / 2)) - ((boxArray[devicesCount].getY()) + (boxArray[devicesCount].getHeight() / 2));
+                        x = x / 10000;
+                        y = y / 10000;
+                        send("ini," + devicesCount + "," + x.toFixed(4) + "," + y.toFixed(4));
                         devicesCount++;
                         recenterMaps();
                         break;
