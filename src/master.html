@@ -10,8 +10,7 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.js"></script>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-        <script type="text/javascript">
-            //<![CDATA[ 
+        <script type="text/javascript"> 
             $(window).load(function () {
                 changeContent = function (key) {
                     html = textHash[key];
@@ -28,24 +27,33 @@
                     "Device 2": "<h1>You Have Selected Device 2</h1>",
                     "Device 3": "<h1>You Have Selected Device 3</h1>"
                 };
-            });//]]>  
+            });  
     </script>
-    <style type="text/css">
-
-    </style>
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?sensor=true">
     </script>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.2.min.js"></script>
     <script type="text/javascript">
 
         function initialize() {
-            var socket = new WebSocket("ws://10.1.1.8:8182");
+            var socket = new WebSocket("ws://192.168.0.16:8182");
             var zoomMaster = 5;
             var mDPI;
             var mWidthInch;
+            var mHeightInch;
             var totalWidthL = 0;
             var totalWidthR = 0;
             var devicesCount = 0;
+
+            var stage = new Kinetic.Stage({
+                container: 'control',
+                width: 500,
+                height: 500
+            });
+            var boxLayer = new Kinetic.Layer();
+            var boxArray = [];
+            boxLayer.setScale(0.001, 0.001)
+            
 
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.111),
@@ -78,32 +86,48 @@
                 var mHeightPixel = window.screen.height * p;
                 mDPI = p * 155;
                 mWidthInch = mWidthPixel / mDPI;
-                addWidth(mWidthInch.toFixed(4), "L");
-                addWidth(mWidthInch.toFixed(4), "R");
+                mHeightInch = mHeightPixel / mDPI;
+                addDevice(mWidthInch.toFixed(4) * 10000, mHeightInch.toFixed(4) * 10000);
+                devicesCount++;
             }
 
-            function addWidth(width, dir) {
-                var bezel = (width * 7.5) / 100;
-                if (dir == "L") {
-                    totalWidthL = totalWidthL + (width / 2) + bezel;
-                } else {
-                    totalWidthR = totalWidthR + (width / 2) + bezel;
-                }
+            function addDevice(width, height) {
+                var wBezel = (width * 7.5) / 100;
+                var hBezel = (height * 12.5) / 100;
+                var totalWidth = width + wBezel;
+                var totalHeight = height + hBezel;
+                var box = new Kinetic.Rect({
+                    x: stage.getWidth() * 1000 / 2,
+                    y: stage.getHeight() * 1000 / 2,
+                    width: totalWidth,
+                    height: totalHeight,
+                    stroke: '#00D2FF',
+                    stroke: 'black',
+                    strokeWidth: wBezel,
+                    draggable: true
+                });
+               
+                boxArray.push(box);
+                boxLayer.add(boxArray[devicesCount]);
+                stage.add(boxLayer);
             }
-
+            
             function recieve(msg) {
                 var data = msg.split(",");
 
                 switch (data[0]) {
                     case "mas":
+                        var w = parseInt(data[1]);
+                        var h = parseInt(data[2]);
+                        addDevice(w, h);
+                        console.log(boxArray[0].getX());
+                        console.log(boxArray[0].getAbsolutePosition().x);
+                        var x = ((boxArray[0].getX()) + (boxArray[0].getWidth() / 2)) - ((boxArray[devicesCount].getX()) + (boxArray[devicesCount].getWidth() / 2));
+                        var y = ((boxArray[0].getY()) + (boxArray[0].getHeight() / 2)) - ((boxArray[devicesCount].getY()) + (boxArray[devicesCount].getHeight() / 2));
+                        x = x / 10000;
+                        y = y / 10000;
+                        send("ini," + devicesCount + "," + x.toFixed(4) + "," + y.toFixed(4));
                         devicesCount++;
-                        addWidth(data[1], data[2]);
-                        if (data[2] == "L") {
-                            send("ini," + devicesCount + "," + totalWidthL);
-                        } else {
-                            send("ini," + devicesCount + "," + totalWidthR);
-                        }
-                        addWidth(data[1], data[2]);
                         recenterMaps();
                         break;
                     case "slv":
@@ -131,6 +155,8 @@
             function send(msg) {
                 socket.send(msg);
             }
+
+           
         }
     </script>
 </head>
@@ -139,6 +165,8 @@
       <button id="btn1">Menu</button>
     <div id="container">
 <div id="hidediv">
+    <div id="control"></div>
+    
         <div class="viewport">
       <div class="frame">
         <div id="menu" class="menu nav-collapse collapse width">
@@ -190,5 +218,6 @@
 
 </script>
         </div>
+
 </body>
 </html>
