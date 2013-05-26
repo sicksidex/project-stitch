@@ -15,6 +15,7 @@
         function initialize() {
             var socket = new WebSocket("ws://192.168.0.16:8182");
             var widthInch;
+            var heightInch;
             var deviceID = 0;
             var offsetInch;
             var dir;
@@ -44,15 +45,7 @@
 
             function newDevice() {
                 getDimensions();
-                var dirCheck = confirm("Is this device on the left?");
-                if (dirCheck == true) {
-                    dir = "L";
-                    send("mas," + widthInch.toFixed(4) + ",L");
-                } else {
-                    send("mas," + widthInch.toFixed(4) + ",R");
-                    dir = "R";
-                }
-                
+                send("mas," + widthInch.toFixed(4) + "," + heightInch.toFixed(4));
             }
 
             function getDimensions() {
@@ -61,6 +54,7 @@
                 var heightPixel = window.screen.height * p;
                 var DPI = p * 155;
                 widthInch = widthPixel / DPI;
+                heightInch = heightPixel / DPI;
             }
 
             function send(msg) {

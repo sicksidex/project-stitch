@@ -29,6 +29,7 @@
             var zoomMaster = 5;
             var mDPI;
             var mWidthInch;
+            var mHeightInch;
             var totalWidthL = 0;
             var totalWidthR = 0;
             var devicesCount = 0;
@@ -40,6 +41,8 @@
             });
             var boxLayer = new Kinetic.Layer();
             var boxArray = [];
+            boxLayer.setScale(0.001, 0.001)
+            
 
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.111),
@@ -72,25 +75,32 @@
                 var mHeightPixel = window.screen.height * p;
                 mDPI = p * 155;
                 mWidthInch = mWidthPixel / mDPI;
-                addWidth(mWidthInch.toFixed(4), "L");
-                addWidth(mWidthInch.toFixed(4), "R");
+                mHeightInch = mHeightPixel / mDPI;
+                addDevice(mWidthInch.toFixed(4) * 10000, mHeightInch.toFixed(4) * 10000);
+                devicesCount++;
             }
 
-            function addDevice(width, height, ID) {
+            function addDevice(width, height) {
                 var wBezel = (width * 7.5) / 100;
                 var hBezel = (height * 12.5) / 100;
                 var totalWidth = width + wBezel;
                 var totalHeight = height + hBezel;
+                console.log(wBezel);
+                console.log(totalHeight);
                 var box = new Kinetic.Rect({
-                    x: 0,
-                    y: 0,
+                    x: stage.getWidth() / 2,
+                    y: stage.getHeight() / 2,
                     width: totalWidth,
                     height: totalHeight,
                     stroke: '#00D2FF',
-                    strokeWidth: 4,
+                    stroke: 'black',
+                    strokeWidth: wBezel,
                     draggable: true
                 });
+               
                 boxArray.push(box);
+                boxLayer.add(boxArray[devicesCount]);
+                stage.add(boxLayer);
             }
 
             function recieve(msg) {
@@ -98,14 +108,9 @@
 
                 switch (data[0]) {
                     case "mas":
+                        addDevice(data[1], data[2]);
+                        send("ini," + devicesCount);
                         devicesCount++;
-                        addWidth(data[1], data[2]);
-                        if (data[2] == "L") {
-                            send("ini," + devicesCount + "," + totalWidthL);
-                        } else {
-                            send("ini," + devicesCount + "," + totalWidthR);
-                        }
-                        addWidth(data[1], data[2]);
                         recenterMaps();
                         break;
                     case "slv":
@@ -139,7 +144,7 @@
     </script>
 </head>
 <body onload="initialize()">
-    <div id="map_canvas" style="width: 100%; height: 100%"></div>
     <div id="control"></div>
+    <div id="map_canvas" style="width: 100%; height: 100%"></div>
 </body>
 </html>
