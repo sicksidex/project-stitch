@@ -47,8 +47,8 @@
 
             var stage = new Kinetic.Stage({
                 container: 'control',
-                width: 500,
-                height: 500
+                width: window.innerWidth,
+                height: window.innerHeight
             });
             var boxLayer = new Kinetic.Layer();
             var boxArray = [];
@@ -164,10 +164,12 @@
     <div id="map_canvas"></div>
       <button id="btn1">Menu</button>
     <div id="container">
+        
 <div id="hidediv">
-    <div id="control"></div>
+    
     
         <div class="viewport">
+            
       <div class="frame">
         <div id="menu" class="menu nav-collapse collapse width">
           <div class="collapse-inner">
@@ -196,7 +198,9 @@
           </div>
         </div>
       </div>
+            
     </div>
+    <div id="control"></div>
     </div>
                       <script>
                           $('#container').hide();
@@ -217,7 +221,8 @@
 
 
 </script>
+        
         </div>
-
+        
 </body>
 </html>
