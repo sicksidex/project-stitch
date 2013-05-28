@@ -89,6 +89,12 @@
                     case "lay":
                         var mapType = data[1];
                         map.setMapTypeId(mapType);
+                        break;
+                    case "ID":
+                        if (deviceID == data[1]) {
+                            offsetInchX = data[2];
+                            offsetInchY = data[3];
+                        }
                     default:
                         break;
                         
