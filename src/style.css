@@ -16,12 +16,16 @@ html {
       position:absolute;
       }
 
-
 canvas {
 margin-left:150px;
 }
 .kineticjs-content {
 margin-left:200px;
+position: fixed !important;
+top:0;
+bottom:0;
+left:0;
+right:0;
 }
 #btn1 {float:right; height:22px; padding-bottom:18px; position:relative;margin-top:6px; margin-right:118px;}
 #btn2 {float:right;}
