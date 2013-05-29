@@ -44,6 +44,13 @@
                 recenterMaster();
             });
 
+            window.addEventListener("orientationchange", function () {
+                getDimensions();
+                var w = widthInch.toFixed(4) * 10000;
+                var h = heightInch.toFixed(4) * 10000;
+                send("ori," + deviceID + "," + w + "," + h);
+            });
+
             function newDevice() {
                 getDimensions();
                 var w = widthInch.toFixed(4) * 10000;
@@ -108,7 +115,7 @@
                 var newLat;
                 var newLng;
 
-                newLat = lat - offsetY;
+                newLat = lat - (-offsetY);
                 newLng = lng - offsetX;
                 console.log(offsetX);
                 console.log(offsetY);

@@ -112,7 +112,7 @@
                 boxArray[devicesCount].on('dragend', function (evt) {
                     var box = evt.targetNode;
                     var x = ((boxArray[0].getX()) + (boxArray[0].getWidth() / 2)) - ((box.getX()) + (box.getWidth() / 2));
-                    var y = ((boxArray[0].getY()) + (boxArray[0].getHeight() / 2)) - ((box.getY()) + (box.getHeight() / 2));
+                    var y = ((boxArray[0].getY()) + (boxArray[0].getHeight() / 2)) - (((box.getY()) + (box.getHeight() / 2)));
                     x = x / 10000;
                     y = y / 10000;
                     send("ID," + box.getId() + "," + x.toFixed(4) + "," + y.toFixed(4));
@@ -151,6 +151,12 @@
                         var newCenter = new google.maps.LatLng(lat, lng);
                         map.setCenter(newCenter);
                         break;
+                    case "ori":
+                        var id = parseInt(data[1]);
+                        var w = parseInt(data[2]);
+                        var h = parseInt(data[3]);
+                        boxArray[id].setSize(w, h);
+                        stage.add(boxLayer);
                 }
 
             }
