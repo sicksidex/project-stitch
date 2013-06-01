@@ -17,8 +17,8 @@
             var widthInch;
             var heightInch;
             var deviceID = 0;
-            var offsetInchX;
-            var offsetInchY;
+            var offsetInchX = 0;
+            var offsetInchY = 0;
             var dir;
             var zoomMaster = 5;
             var fromMas = 0;
@@ -45,17 +45,19 @@
             });
 
             window.addEventListener("orientationchange", function () {
+                fromMas = 1;
                 getDimensions();
-                var w = widthInch.toFixed(4) * 10000;
-                var h = heightInch.toFixed(4) * 10000;
-                send("ori," + deviceID + "," + w + "," + h);
+                var w = widthInch * 10000;
+                var h = heightInch * 10000;
+                send("ori," + deviceID + "," + w.toFixed(0) + "," + h.toFixed(0));
+                fromMas = 0;
             });
 
             function newDevice() {
                 getDimensions();
-                var w = widthInch.toFixed(4) * 10000;
-                var h = heightInch.toFixed(4) * 10000;
-                send("mas," + w + "," + h);
+                var w = widthInch * 10000;
+                var h = heightInch * 10000;
+                send("mas," + w.toFixed(0) + "," + h.toFixed(0));
             }
 
             function getDimensions() {
@@ -78,14 +80,14 @@
                     case "ini":
                         if (deviceID == 0) {
                             deviceID = data[1];
-                            offsetInchX = data[2];
-                            offsetInchY = data[3];
+                            offsetInchX = parseInt(data[2]);
+                            offsetInchY = parseInt(data[3]);
                         }
                         break;
                     case "pos":
                         var zoom = parseInt(data[1]);
-                        var lat = data[2];
-                        var lng = data[3];
+                        var lat = parseInt(data[2]);
+                        var lng = parseInt(data[3]);
 
                         if (zoom != zoomMaster) {
                             zoomMaster = zoom;
@@ -99,8 +101,8 @@
                         break;
                     case "ID":
                         if (deviceID == data[1]) {
-                            offsetInchX = data[2];
-                            offsetInchY = data[3];
+                            offsetInchX = parseInt(data[2]);
+                            offsetInchY = parseInt(data[3]);
                         }
                     default:
                         break;
@@ -115,11 +117,11 @@
                 var newLat;
                 var newLng;
 
-                newLat = lat - (-offsetY);
-                newLng = lng - offsetX;
-                console.log(offsetX);
-                console.log(offsetY);
-                var newCenter = new google.maps.LatLng(lat, newLng);
+                newLat = lat + offsetY;
+                newLng = lng + offsetX;
+                console.log(newLat);
+                console.log(newLng);
+                var newCenter = new google.maps.LatLng(newLat, newLng);
                 map.setCenter(newCenter);
             }
 
