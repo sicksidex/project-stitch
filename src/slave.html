@@ -138,8 +138,8 @@
                         var newLat;
                         var newLng;
                         
-                        newLat = offsetY + lat;
-                        newLng = offsetX + lng;
+                        newLat = lat - offsetY;
+                        newLng = lng - offsetX;
                          
                         console.log(offsetX);
                         console.log(offsetY);
