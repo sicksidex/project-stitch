@@ -41,8 +41,6 @@
             var mDPI;
             var mWidthInch;
             var mHeightInch;
-            var totalWidthL = 0;
-            var totalWidthR = 0;
             var devicesCount = 0;
 
             var stage = new Kinetic.Stage({
@@ -157,28 +155,6 @@
                         stage.add(boxLayer);
                 }
 
-            }
-
-            function getOffset(mas, slv) {
-                var masX = mas.getPosition().x;
-                var masY = mas.getPosition().y;
-                var slvX = slv.getPosition().x;
-                var slvY = slv.getPosition().y;
-                var offX, offY;
-
-                if (masX > slvX && masY > slvY) {
-                    offX = slvX - masX;
-                    offY = masY - slvY;
-                }else if (masX < slvX && masY > slvY) {
-                    offX = slvX - masX;
-                    offY = slvY - masY;
-                } else if (masX < slvX && masY < slvY) {
-                    offX = slvX - masX;
-                    offY = slvY - masY;
-                } else if (masX > slvX && masY < slvY) {
-                    offX = slvX - masX;
-                    offY = slvY - masY;
-                }
             }
 
             function recenterMaps() {
