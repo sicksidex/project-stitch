@@ -15,6 +15,7 @@
                 changeContent = function (key) {
                     html = textHash[key];
                     $('#content').html(html);
+                    
                 }
 
                 $("#menubutton a").click(function (e) {
@@ -36,13 +37,14 @@
     <script type="text/javascript">
 
         function initialize() {
+            
             var socket = new WebSocket("ws://192.168.0.16:8182");
             var zoomMaster = 5;
             var mDPI;
             var mWidthInch;
             var mHeightInch;
             var devicesCount = 0;
-
+            
             var stage = new Kinetic.Stage({
                 container: 'control',
                 width: window.innerWidth,
@@ -63,6 +65,7 @@
                 mapOptions);
 
             getDimensions();
+            
             socket.onopen = function () { };
             socket.onmessage = function (msg) { recieve(msg.data); };
 
@@ -71,6 +74,7 @@
             google.maps.event.addListener(map, 'zoom_changed', function () {
                 zoomMaster = map.getZoom();
                 recenterMaps();
+                launchFullScreen(document.documentElement);
             });
 
             google.maps.event.addListener(map, 'maptypeid_changed', function () {
@@ -90,10 +94,10 @@
             }
 
             function addDevice(width, height) {
-                var wBezel = (width * 14) / 100;
-                var hBezel = (height * 17) / 100;
+                var wBezel = (width * 12.5) / 100;
+                var hBezel = (height * 12.5) / 100;//these values are temporary
                 var totalWidth = width + wBezel;
-                var totalHeight = height + hBezel;
+                var totalHeight = hBezel + height;
                 var box = new Kinetic.Rect({
                     x: stage.getWidth() * 1000 / 2,
                     y: stage.getHeight() * 1000 / 2,
@@ -151,6 +155,7 @@
                         var id = parseInt(data[1]);
                         var w = parseInt(data[2]);
                         var h = parseInt(data[3]);
+                        
                         boxArray[id].setSize(w, h);
                         stage.add(boxLayer);
                 }
@@ -170,10 +175,19 @@
 
            
         }
+        function launchFullScreen(element) {
+            if (element.requestFullScreen) {
+                element.requestFullScreen();
+            } else if (element.webkitRequestFullScreen) {
+                console.log("in");
+                element.webkitRequestFullScreen();
+            }
+        }
     </script>
 </head>
 <body onload="initialize()">
     <div id="map_canvas"></div>
+    
       <button id="btn1">Menu</button>
     <div id="container">
         
