@@ -79,8 +79,8 @@
                     case "ini":
                         if (deviceID == 0) {
                             deviceID = data[1];
-                            offsetInchX = parseInt(data[2]);
-                            offsetInchY = parseInt(data[3]);
+                            offsetInchX = parseFloat(data[2]);
+                            offsetInchY = parseFloat(data[3]);
                         }
                         break;
                     case "pos":
@@ -100,8 +100,8 @@
                         break;
                     case "ID":
                         if (deviceID == data[1]) {
-                            offsetInchX = parseInt(data[2]);
-                            offsetInchY = parseInt(data[3]);
+                            offsetInchX = parseFloat(data[2]);
+                            offsetInchY = parseFloat(data[3]);
                         }
                     default:
                         break;
