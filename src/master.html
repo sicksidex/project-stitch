@@ -90,8 +90,8 @@
             }
 
             function addDevice(width, height) {
-                var wBezel = (width * 7.5) / 100;
-                var hBezel = (height * 12.5) / 100;
+                var wBezel = (width * 14) / 100;
+                var hBezel = (height * 17) / 100;
                 var totalWidth = width + wBezel;
                 var totalHeight = height + hBezel;
                 var box = new Kinetic.Rect({
@@ -142,8 +142,8 @@
                             zoomMaster = zoom;
                             map.setZoom(zoom);
                         }
-                        var lat = parseInt(data[2]);
-                        var lng = parseInt(data[3]);
+                        var lat = parseFloat(data[2]);
+                        var lng = parseFloat(data[3]);
                         var newCenter = new google.maps.LatLng(lat, lng);
                         map.setCenter(newCenter);
                         break;

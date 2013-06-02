@@ -85,8 +85,8 @@
                         break;
                     case "pos":
                         var zoom = parseInt(data[1]);
-                        var lat = parseInt(data[2]);
-                        var lng = parseInt(data[3]);
+                        var lat = parseFloat(data[2]);
+                        var lng = parseFloat(data[3]);
 
                         if (zoom != zoomMaster) {
                             zoomMaster = zoom;
