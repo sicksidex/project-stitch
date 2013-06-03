@@ -4,16 +4,37 @@
     <title>Experiment</title>
       <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
+                #DeviceIdNumber {
+    font-size: 2em;
+    text-align: center;
+    font-weight:bolder;
+    position:relative;
+    float:left;
+       }
+        #DeviceIdNumber:hover {
+    font-size: 20em;
+    text-align: center;
+    font-weight:bolder;
+    position:relative;
+    float:left;
+       }
+      #DeviceIdNumber:active {
+    font-size: 2em;
+    text-align: center;
+    font-weight:bolder;
+    position:relative;
+    float:left;
+       }
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
-      #map_canvas { height: 100% }
+      #map_canvas { position:absolute; height: 100%; width:100% }
     </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?sensor=true">
     </script>
     <script type="text/javascript">
         function initialize() {
-            var socket = new WebSocket("ws://192.168.0.16:8182");
+            var socket = new WebSocket("ws://10.1.1.3:8182");
             var widthInch;
             var heightInch;
             var deviceID = 0;
@@ -87,6 +108,7 @@
                             deviceID = data[1];
                             offsetInchX = parseFloat(data[2]);
                             offsetInchY = parseFloat(data[3]);
+                            document.getElementById("DeviceIdNumber").innerHTML = deviceID;
                         }
                         break;
                     case "pos":
@@ -167,6 +189,7 @@
     </script>
   </head>
   <body onload="initialize()">
-    <div id="map_canvas" style="width:100%; height:100%" onclick="launchFullScreen(document.documentElement)"></div>
+    <div id="map_canvas" onclick="launchFullScreen(document.documentElement)"></div>
+    <div id="DeviceIdNumber"></div>  
   </body>
 </html>
