@@ -37,7 +37,6 @@
     <script type="text/javascript">
 
         function initialize() {
-            
             var socket = new WebSocket("ws://192.168.0.16:8182");
             var zoomMaster = 5;
             var mDPI;
@@ -74,7 +73,7 @@
             google.maps.event.addListener(map, 'zoom_changed', function () {
                 zoomMaster = map.getZoom();
                 recenterMaps();
-                launchFullScreen(document.documentElement);
+                
             });
 
             google.maps.event.addListener(map, 'maptypeid_changed', function () {
@@ -173,6 +172,7 @@
                 socket.send(msg);
             }
 
+            
            
         }
         function launchFullScreen(element) {
@@ -183,10 +183,11 @@
                 element.webkitRequestFullScreen();
             }
         }
+        
     </script>
 </head>
 <body onload="initialize()">
-    <div id="map_canvas"></div>
+    <div id="map_canvas" onclick="launchFullScreen(document.documentElement)"></div>
     
       <button id="btn1">Menu</button>
     <div id="container">
@@ -232,6 +233,7 @@
                           $("#btn1").click(function () {
                               $("#container").toggle({ effect: "fold", size: "40" });
                               $('#btn1').hide();
+                              
 
                           });
                           $("#btn2").click(function () {
