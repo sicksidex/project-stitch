@@ -17,12 +17,11 @@
             var widthInch;
             var heightInch;
             var deviceID = 0;
-            var offsetInchX;
-            var offsetInchY;
-            var dir;
+            var offsetInchX = 0;
+            var offsetInchY = 0;
             var zoomMaster = 5;
             var fromMas = 0;
-
+            
             var mapOptions = {
                 center: new google.maps.LatLng(-34.397433, 150.111),
                 zoom: zoomMaster,
@@ -33,7 +32,9 @@
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                 mapOptions);
 
-            socket.onopen = function () { newDevice(); };
+            socket.onopen = function () {
+                newDevice();
+            };
             socket.onmessage = function (msg) { recieve(msg.data); };
 
             google.maps.event.addListener(map, 'center_changed', function () {
@@ -44,11 +45,24 @@
                 recenterMaster();
             });
 
+            window.addEventListener("orientationchange", function () {
+                fromMas = 1;
+                getDimensions();
+                var w = widthInch * 10000;
+                var h = heightInch * 10000;
+                var wBezel = (w * 12.5) / 100;
+                var hBezel = (h * 12.5) / 100;//these values are temporary
+                var totalWidth = w + wBezel;
+                var totalHeight = h + hBezel;
+                send("ori," + deviceID + "," + totalWidth.toFixed(0) + "," + totalHeight.toFixed(0));
+                fromMas = 0;
+            });
+
             function newDevice() {
                 getDimensions();
-                var w = widthInch.toFixed(4) * 10000;
-                var h = heightInch.toFixed(4) * 10000;
-                send("mas," + w + "," + h);
+                var w = widthInch * 10000;
+                var h = heightInch * 10000;
+                send("mas," + w.toFixed(0) + "," + h.toFixed(0));
             }
 
             function getDimensions() {
@@ -71,14 +85,14 @@
                     case "ini":
                         if (deviceID == 0) {
                             deviceID = data[1];
-                            offsetInchX = data[2];
-                            offsetInchY = data[3];
+                            offsetInchX = parseFloat(data[2]);
+                            offsetInchY = parseFloat(data[3]);
                         }
                         break;
                     case "pos":
                         var zoom = parseInt(data[1]);
-                        var lat = data[2];
-                        var lng = data[3];
+                        var lat = parseFloat(data[2]);
+                        var lng = parseFloat(data[3]);
 
                         if (zoom != zoomMaster) {
                             zoomMaster = zoom;
@@ -89,6 +103,12 @@
                     case "lay":
                         var mapType = data[1];
                         map.setMapTypeId(mapType);
+                        break;
+                    case "ID":
+                        if (deviceID == data[1]) {
+                            offsetInchX = parseFloat(data[2]);
+                            offsetInchY = parseFloat(data[3]);
+                        }
                     default:
                         break;
                         
@@ -102,11 +122,11 @@
                 var newLat;
                 var newLng;
 
-                newLat = lat - offsetY;
-                newLng = lng - offsetX;
-                console.log(offsetX);
-                console.log(offsetY);
-                var newCenter = new google.maps.LatLng(lat, newLng);
+                newLat = lat + offsetY;
+                newLng = lng + offsetX;
+                console.log(newLat);
+                console.log(newLng);
+                var newCenter = new google.maps.LatLng(newLat, newLng);
                 map.setCenter(newCenter);
             }
 
@@ -123,8 +143,8 @@
                         var newLat;
                         var newLng;
                         
-                        newLat = offsetY + lat;
-                        newLng = offsetX + lng;
+                        newLat = lat - offsetY;
+                        newLng = lng - offsetX;
                          
                         console.log(offsetX);
                         console.log(offsetY);
@@ -135,6 +155,14 @@
                 }
             }
             
+        }
+        function launchFullScreen(element) {
+            if (element.requestFullScreen) {
+                element.requestFullScreen();
+            } else if (element.webkitRequestFullScreen) {
+                console.log("in");
+                element.webkitRequestFullScreen();
+            }
         }
     </script>
   </head>
