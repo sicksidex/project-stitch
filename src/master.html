@@ -33,17 +33,18 @@
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?sensor=true">
     </script>
-    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.2.min.js"></script>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.3.min.js"></script>
     <script type="text/javascript">
 
         function initialize() {
-            var socket = new WebSocket("ws://10.1.1.3:8182");
+            var socket = new WebSocket("ws://192.168.0.16:8182");
             var zoomMaster = 5;
             var mDPI;
             var mWidthInch;
             var mHeightInch;
             var devicesCount = 0;
-            
+            google.maps.visualRefresh = true;
+
             var stage = new Kinetic.Stage({
                 container: 'control',
                 width: window.innerWidth - 57.4,
@@ -100,28 +101,51 @@
                 var totalWidth = width + wBezel;
                 var totalHeight = hBezel + height;
                 var box = new Kinetic.Rect({
-                    x: stage.getWidth() * 1000 / 2,
-                    y: stage.getHeight() * 1000 / 2,
+                    x: 50000,
+                    y: 50000,
                     width: totalWidth,
                     height: totalHeight,
-                    stroke: '#00D2FF',
                     stroke: 'black',
-                    strokeWidth: wBezel,
+                    strokeWidth: wBezel/2,
+                    id: devicesCount,
+                    draggable: true
+                });
+
+                var text = new Kinetic.Text({
+                    x: 50000,
+                    y: 50000,
+                    text: devicesCount,
+                    fontSize: 40*1000,
+                    fontFamily: 'Arial',
+                    fontStyle: 'bold',
+                    fill: 'black',
+                    height: totalHeight,
+                    width: totalWidth,
+                    padding: totalHeight / 20,
+                    align: 'center'
+                });
+
+                var group = new Kinetic.Group({
+                    x: 50000,
+                    y: 50000,
                     draggable: true,
                     id: devicesCount
                 });
                
                 boxArray.push(box);
-                boxArray[devicesCount].on('dragend', function (evt) {
-                    var box = evt.targetNode;
-                    var x = ((box.getAbsolutePosition().x/10) + (box.getWidth() / 20000)) - ((boxArray[0].getAbsolutePosition().x/10) + (boxArray[0].getWidth() / 20000));
-                    var y = ((boxArray[0].getAbsolutePosition().y/10) + (boxArray[0].getHeight() / 200000)) - ((box.getAbsolutePosition().y/10) + (box.getHeight() / 200000));
+                group.add(box);
+                group.add(text);
+                group.on('dragend', function (evt) {
+                    var id = group.getId();
+                    var x = ((boxArray[id].getAbsolutePosition().x/10) + (boxArray[id].getWidth() / 20000)) - ((boxArray[0].getAbsolutePosition().x/10) + (boxArray[0].getWidth() / 20000));
+                    var y = ((boxArray[0].getAbsolutePosition().y/10) + (boxArray[0].getHeight() / 20000)) - ((boxArray[id].getAbsolutePosition().y/10) + (boxArray[id].getHeight() / 20000));
 
                     
-                    send("ID," + box.getId() + "," + x.toFixed(4) + "," + y.toFixed(4));
+                    send("ID," + id + "," + x.toFixed(4) + "," + y.toFixed(4));
                     recenterMaps();
                 });
-                boxLayer.add(boxArray[devicesCount]);
+                
+                boxLayer.add(group);
                 stage.add(boxLayer);
             }
             
@@ -136,7 +160,7 @@
                         console.log(boxArray[0].getX());
                         console.log(boxArray[0].getAbsolutePosition().x);
                         var x = ((boxArray[devicesCount].getAbsolutePosition().x/10) + (boxArray[devicesCount].getWidth() / 20000)) - ((boxArray[0].getAbsolutePosition().x/10) + (boxArray[0].getWidth() / 20000));
-                        var y = ((boxArray[0].getAbsolutePosition().y / 10) + (boxArray[0].getHeight() / 200000)) - ((boxArray[devicesCount].getAbsolutePosition().y/10) + (boxArray[devicesCount].getHeight() / 200000));
+                        var y = ((boxArray[0].getAbsolutePosition().y / 10) + (boxArray[0].getHeight() / 20000)) - ((boxArray[devicesCount].getAbsolutePosition().y/10) + (boxArray[devicesCount].getHeight() / 20000));
                         send("ini," + devicesCount + "," + x.toFixed(4) + "," + y.toFixed(4));
                         devicesCount++;
                         recenterMaps();
