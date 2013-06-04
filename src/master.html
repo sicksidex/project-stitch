@@ -183,6 +183,10 @@
                         
                         boxArray[id].setSize(w, h);
                         stage.add(boxLayer);
+                        var x = ((boxArray[id].getAbsolutePosition().x / 10) + (boxArray[id].getWidth() / 20000)) - ((boxArray[0].getAbsolutePosition().x / 10) + (boxArray[0].getWidth() / 20000));
+                        var y = ((boxArray[0].getAbsolutePosition().y / 10) + (boxArray[0].getHeight() / 20000)) - ((boxArray[id].getAbsolutePosition().y / 10) + (boxArray[id].getHeight() / 20000));
+                        send("ID," + id + "," + x.toFixed(4) + "," + y.toFixed(4));
+                        recenterMaps();
                 }
 
             }
