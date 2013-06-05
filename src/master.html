@@ -172,6 +172,14 @@
                     }
                     recenterMaps();
                 });
+
+                group.on('dblclick dbltap', function (evt) {
+                    var id = group.getId();
+                    if (id != 0) {
+                        group.remove();
+                        boxLayer.draw();
+                    }
+                });
                 
                 boxLayer.add(group);
                 stage.add(boxLayer);
