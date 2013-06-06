@@ -2,13 +2,10 @@
 <html>
 <head>
     <title>Experiment</title>
-        <meta content="width=device-width,minimum-scale=1,maximum-scale=1" name="viewport">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.js"></script>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
         <script type="text/javascript"> 
             $(window).load(function () {
@@ -255,43 +252,21 @@
 <body onload="initialize()">
     <div id="map_canvas" onclick="launchFullScreen(document.documentElement)"></div>
     <div id="DeviceIdNumber2">0</div>
-      <button id="btn1">Menu</button>
+      <button id="btn1"></button>
     <div id="container">
         
 <div id="hidediv">
-    
-    
-        <div class="viewport">
-            
-      <div class="frame">
-        <div id="menu" class="menu nav-collapse collapse width">
-          <div class="collapse-inner">
-            <div class="navbar navbar-inverse">
-              <div class="navbar-inner">
-              </div>
-            </div>
-            <ul class="nav nav-tabs nav-stacked">
-              <li><a>Device 1</a></li>
-              <li><a>Device 2</a></li>
-              <li><a>Device 3</a></li>
-            </ul>
-                <button id="btn2">Close Menu</button>
-          </div>
-        </div>
-        <div class="view">
-          <div class="navbar navbar-inverse">
-            <div class="navbar-inner">
-              <button id="menubutton" type="button" class="btn btn-navbar" data-toggle="collapse" data-target="#menu">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-            
+    <div id="sideMenu">
+        <table>
+            <tr>
+                <td id="menuLines">&#9776;</td>
+            </tr>
+            <tr>
+                <td id="closeButtontd"><button id="btn2"></button></td>
+            </tr>
+        </table>
     </div>
+    
     <div id="control"></div>
     </div>
                       <script>
@@ -310,8 +285,6 @@
                           $("#menubutton").click(function () {
                               $("#menu").show();
                           });
-
-
 
 </script>
         
