@@ -22,6 +22,7 @@ button {
 
 #DeviceIdNumber2 {
     margin: 0;
+    top:35px;
     width: 40px;
     font-size: 3em;
     text-align: center;
@@ -55,9 +56,9 @@ canvas {
     width: 40px;
     padding-bottom: 18px;
     position: absolute;
-    margin-top: 56px;
+    top: 0;
     margin-left: 0;
-    background-image: url('Images/settings-icon.png');
+    background-image: url('Images/settings.png');
     background-size: cover;
     background-color: rgba(255, 255, 255, 0);
     border: none;
@@ -69,7 +70,7 @@ canvas {
     width: 40px;
     padding-bottom: 18px;
     position: relative;
-    background-image: url('Images/delete-icon.png');
+    background-image: url('Images/settings.png');
     background-size: cover;
     background-color: rgba(255, 255, 255, 0);
     border: none;
@@ -114,16 +115,12 @@ canvas {
 
 #closeButtontd {
     float: left;
+    padding-bottom:10px;
     margin: 0;
     left: 0;
     right: 0;
 }
 
-#menuLines {
-    text-align: center;
-    font-size: 2em;
-    font-weight: bolder;
-}
 
 table {
     width: 100%;
@@ -189,4 +186,84 @@ td {
     border: 1px solid #3079ed !important;
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
     opacity: 0.5;
+}
+
+
+/*This code was retrieved from http://forrst.com/posts/Expanding_Search_Box_from_Search_Icon_pure_CSS-tqP, and is
+    only for the po-out expanding search box function. we do not own this code*/
+
+
+
+/* reset webkit search input browser style */
+input {
+	outline: none;
+}
+input[type=search] {
+	-webkit-appearance: textfield;
+	-webkit-box-sizing: content-box;
+	font-family: inherit;
+	font-size: 100%;
+}
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button {
+	display: none; /* remove the search and cancel icon */
+}
+
+/* search input field */
+input[type=search] {
+    left:0;
+    right:0;
+	background: #ededed url(Images/search-icon.png) no-repeat 12px center;
+	border: solid 1px #ccc;
+	padding: 9px 10px 9px 32px;
+	width: 0;
+	
+	-webkit-border-radius: 10em;
+	-moz-border-radius: 10em;
+	border-radius: 10em;
+	
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	transition: all .5s;
+}
+input[type=search]:focus {
+	width: 130px;
+	background-color: #fff;
+	border-color: #6dcff6;
+	
+	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109,207,246,.5);
+}
+
+/* placeholder */
+input:-moz-placeholder {
+	color: #999;
+}
+input::-webkit-input-placeholder {
+	color: #999;
+}
+
+/* demo B */
+#demo-b input[type=search] {
+	width: 15px;
+	padding-left: 10px;
+	color: transparent;
+	cursor: pointer;
+}
+#demo-b input[type=search]:hover {
+	background-color: #fff;
+}
+#demo-b input[type=search]:focus {
+	width: 130px;
+	padding-left: 32px;
+	color: #000;
+	background-color: #fff;
+	cursor: auto;
+}
+#demo-b input:-moz-placeholder {
+	color: transparent;
+}
+#demo-b input::-webkit-input-placeholder {
+	color: transparent;
 }
