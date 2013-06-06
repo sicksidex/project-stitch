@@ -1,118 +1,192 @@
 body {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
+
 html {
-     height: 100%;
-     }
-button {cursor:pointer;}
+    height: 100%;
+}
+
+button {
+    cursor: pointer;
+}
 
 #map_canvas {
-      height: 100%;
-      width: 100%;
-      position:absolute;
-      }
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
 
- #DeviceIdNumber2 {
-    margin:0;
-    width:40px;
+#DeviceIdNumber2 {
+    margin: 0;
+    width: 40px;
     font-size: 3em;
     text-align: center;
-    font-weight:bolder;
-    position:relative;
-    float:left;
-       }
+    font-weight: bolder;
+    position: relative;
+    float: left;
+}
 
 :-webkit-full-screen {
-      width: 100%;
-      height: 100%;
-    }
+    width: 100%;
+    height: 100%;
+}
 
 canvas {
-margin-left:150px;
+    margin-left: 150px;
 }
+
 .kineticjs-content {
-/*position: fixed !important;*/
-margin-left:3em;
-top:0;
-bottom:0;
-left:0;
-right:0;
+    /*position: fixed !important;*/
+    margin-left: 3em;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
+
 #btn1 {
-       float:left;
-       left:0;
-       height:40px;
-       width:40px;
-       padding-bottom:18px; 
-       position:absolute;
-       margin-top:56px; 
-       margin-left:0; 
-       background-image: url('Images/settings-icon.png');
-       background-size:cover;
-       background-color:rgba(255, 255, 255, 0);
-       border:none
+    float: left;
+    left: 0;
+    height: 40px;
+    width: 40px;
+    padding-bottom: 18px;
+    position: absolute;
+    margin-top: 56px;
+    margin-left: 0;
+    background-image: url('Images/settings-icon.png');
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
 }
+
 #btn2 {
-       float:right;
-       height:40px;
-       width:40px;
-       padding-bottom:18px; 
-       position:relative; 
-       background-image: url('Images/delete-icon.png');
-       background-size:cover;
-       background-color:rgba(255, 255, 255, 0);
-       border:none
+    float: right;
+    height: 40px;
+    width: 40px;
+    padding-bottom: 18px;
+    position: relative;
+    background-image: url('Images/delete-icon.png');
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
 }
-#container {height:100%; width:100%; position:absolute;top:0;left:0;right:0;}
-#hidediv { 
-background: -moz-linear-gradient(top,  rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.33) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.52)), color-stop(100%,rgba(0,0,0,0.33))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* IE10+ */
-background: linear-gradient(to bottom,  rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#85000000', endColorstr='#54000000',GradientType=0 ); /* IE6-9 */
-font-weight:bold;
-font-size:16px;
-width:100%;
-float:right;
-height:100%;
-top:0;left:0;right:0;
-position: absolute;
+
+#container {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
+
+#hidediv {
+    background: -moz-linear-gradient(top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.33) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.52)), color-stop(100%,rgba(0,0,0,0.33))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.52) 0%,rgba(0,0,0,0.33) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#85000000', endColorstr='#54000000',GradientType=0 ); /* IE6-9 */
+    font-weight: bold;
+    font-size: 16px;
+    width: 100%;
+    float: right;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+
 #sideMenu {
     background-color: rgba(209, 212, 218, 0.79);
-    height:100%;
-    width:3em;
-    min-width:3em;
-    max-width:3em;
-    position:absolute;
+    height: 100%;
+    width: 3em;
+    min-width: 3em;
+    max-width: 3em;
+    position: absolute;
 }
+
 #closeButtontd {
-    float:left;
-    margin:0;
-    left:0;
-    right:0;
+    float: left;
+    margin: 0;
+    left: 0;
+    right: 0;
 }
+
 #menuLines {
-    text-align:center;
-    font-size:2em;
-    font-weight:bolder;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bolder;
 }
+
 table {
-    width:100%
+    width: 100%;
 }
+
 tr {
-    left:0;
-    margin:0;
+    left: 0;
+    margin: 0;
 }
+
 td {
-    left:0;
-    margin:0;
+    left: 0;
+    margin: 0;
 }
 
 /*Some icons used were retrieved from http://www.iconarchive.com/, we do not claim any ownership*/
+#search {
+    background-color: #4d90fe !important;
+    border-color: #3079ed !important;
+    color: #fff !important;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4d90fe), color-stop(100%, #4787ed)) !important;
+    background-image: -webkit-linear-gradient(top, #4d90fe,#4787ed) !important;
+    background-image: -moz-linear-gradient(top, #4d90fe,#4787ed) !important;
+    background-image: -o-linear-gradient(top, #4d90fe,#4787ed) !important;
+    background-image: linear-gradient(top, #4d90fe,#4787ed) !important;
+}
+
+    #search:hover {
+        background-color: #357ae8 !important;
+        border-color: #2f5bb7 !important;
+        color: #fff !important;
+        background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4d90fe), color-stop(100%, #357ae8)) !important;
+        background-image: -webkit-linear-gradient(top, #4d90fe,#357ae8) !important;
+        background-image: -moz-linear-gradient(top, #4d90fe,#357ae8) !important;
+        background-image: -o-linear-gradient(top, #4d90fe,#357ae8) !important;
+        background-image: linear-gradient(top, #4d90fe,#357ae8) !important;
+        -webkit-box-shadow: rgba(0,0,0,0.2) 0 1px 1px 0;
+        -moz-box-shadow: rgba(0,0,0,0.2) 0 1px 1px 0;
+        box-shadow: rgba(0,0,0,0.2) 0 1px 1px 0;
+    }
+
+#search:hover.disabled, #search:hover.disabled:hover, #search:hover.disabled:active {
+    background: #357ae8 !important;
+    border: 1px solid #2f5bb7 !important;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+    opacity: 0.5;
+}
+
+#search:active {
+    -webkit-box-shadow: rgba(0,0,0,0.3) 0 1px 2px 0 inset;
+    -moz-box-shadow: rgba(0,0,0,0.3) 0 1px 2px 0 inset;
+    box-shadow: rgba(0,0,0,0.3) 0 1px 2px 0 inset;
+}
+
+#search.selected {
+    -webkit-box-shadow: rgba(0,0,0,0.3) 0 3px 6px 0 inset;
+    -moz-box-shadow: rgba(0,0,0,0.3) 0 3px 6px 0 inset;
+    box-shadow: rgba(0,0,0,0.3) 0 3px 6px 0 inset;
+}
+
+#search.disabled, #search.disabled:hover, #search.disabled:active {
+    background: #4d90fe !important;
+    border: 1px solid #3079ed !important;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+    opacity: 0.5;
+}
