@@ -272,7 +272,7 @@
 
                 <span id="closeButtontd"><button id="btn2"></button></span>
 
-       <input id="address" type="search" value="Sydney, NSW" onkeypress="codeAddress()">
+       <input id="address" type="search" value="Sydney, NSW" onblur="codeAddress()">
     </div>
     
     <div id="control"></div>
@@ -292,9 +292,6 @@
                           });
                           $("#menubutton").click(function () {
                               $("#menu").show();
-                          });
-                          $("#address").click(function () {
-                              onclick.codeAddress();
                           });
 </script>
         
