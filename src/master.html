@@ -32,6 +32,8 @@
     </script>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.3.min.js"></script>
     <script type="text/javascript">
+        var geocoder;
+        var map;
 
         function initialize() {
             var socket = new WebSocket("ws://192.168.0.16:8182");
@@ -60,8 +62,9 @@
                 disableDefaultUI: true,
                 zoomControl: true
             };
-            var map = new google.maps.Map(document.getElementById("map_canvas"),
+            map = new google.maps.Map(document.getElementById("map_canvas"),
                 mapOptions);
+            geocoder = new google.maps.Geocoder();
 
             getDimensions();
             addDevice(mWidthInch.toFixed(4) * 10000, mHeightInch.toFixed(4) * 10000);
@@ -234,10 +237,21 @@
             function send(msg) {
                 socket.send(msg);
             }
-
-            
+               
            
         }
+
+        function codeAddress() {
+            var address = document.getElementById("address").value;
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
+
         function launchFullScreen(element) {
             if (element.requestFullScreen) {
                 element.requestFullScreen();
@@ -263,6 +277,12 @@
             </tr>
             <tr>
                 <td id="closeButtontd"><button id="btn2"></button></td>
+            </tr>
+            <tr>
+                <td><input id="address" type="text" value="Sydney, NSW" /></td>
+            </tr>
+            <tr>
+                <td><button id="search" onclick="codeAddress()">Search</button></td>
             </tr>
         </table>
     </div>
